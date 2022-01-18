@@ -4,7 +4,7 @@ const int rightForward=A2;
 const int rightBackward=A3;
 int buzzPin=8;
 #include <LiquidCrystal.h>
-#include <IRremote.h> 
+#include <IRremote.h>
 //LiquidCrystal lcd(RS, E, D4, D5, D6, D7);
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 #include <Wire.h>
@@ -12,7 +12,7 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 #define REPORTING_PERIOD_MS     1000
 PulseOximeter pox;
 uint32_t tsLastReport = 0;
- 
+
 void onBeatDetected()
 {
     Serial.println("Beat!");
@@ -30,17 +30,17 @@ void setup()
         lcd.println("SUCCESS");
     }
      pox.setIRLedCurrent(MAX30100_LED_CURR_7_6MA);
- 
+
     // Register a callback for the beat detection
     pox.setOnBeatDetectedCallback(onBeatDetected);
 }
- 
+
 void loop()
-{    
+{
     // Make sure to call update as fast as possible
     pox.update();
     if (millis() - tsLastReport > REPORTING_PERIOD_MS) {
-      
+
         lcd.clear();
         lcd.setCursor(0,0);
         lcd.print("Heart rate:");
@@ -52,19 +52,19 @@ void loop()
         if(pox.getSpO2()<=93||pox.getHeartRate()<=60){digitalWrite(buzzPin,HIGH);}
 
         tsLastReport = millis();
-    }    if(irrcev.decode(&results)){  
+    }    if(irrcev.decode(&results)){
  if(results.value==0xFF18E7){
   digitalWrite(leftForward,HIGH);
   digitalWrite(rightForward,HIGH);delay(1000);
   irrcev.resume();}
  ///////////////////////////////////////////////////
- 
+
    else if(results.value==0xFF4AB5)
   {digitalWrite(leftBackward,HIGH);
   digitalWrite(rightBackward,HIGH);delay(1000);
   irrcev.resume();}
  ////////////////////////////////////////////////////
- 
+
    else if(results.value==0xFF5AA5){
    analogWrite(leftForward,254);
    analogWrite(rightForward,125);delay(1000);
@@ -82,12 +82,11 @@ void loop()
    analogWrite(leftForward,0);
    analogWrite(rightForward,254);delay(1000);
    irrcev.resume();}
-   
+
  else if(results.value==0xFF6897){
   digitalWrite(leftForward,LOW);
    digitalWrite(rightForward,LOW);
     digitalWrite(leftBackward,LOW);
    digitalWrite(rightBackward,LOW);delay(1000);
    irrcev.resume();}}}
-        
-  
+
