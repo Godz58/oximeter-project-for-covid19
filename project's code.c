@@ -79,9 +79,9 @@ void loop()
 /////////////////////////////////////////////////////
 
  else if(results.value==0xFF38C7){
-   analogWrite(leftForward,0);
-   analogWrite(rightForward,254);delay(1000);
-   irrcev.resume();}
+  digitalWrite(leftBackward,HIGH);
+  digitalWrite(rightForward,HIGH);delay(1000);
+  irrcev.resume();}
 
  else if(results.value==0xFF6897){
   digitalWrite(leftForward,LOW);
